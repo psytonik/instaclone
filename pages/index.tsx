@@ -12,9 +12,10 @@ export default function Home() {
       </Head>
 
       <main className="">
-          <Header />
           {/* HEADER */}
+          <Header />
           {/* FEED */}
+
           {/* MODAL */}
       </main>
     </>

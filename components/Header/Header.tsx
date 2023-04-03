@@ -6,27 +6,28 @@ import {BsPlusCircle} from 'react-icons/bs';
 
 const Header = () => {
 	return (
-		<div className="">
+		<div className="shadow-sm border-b sticky top-0 bg-white z-30">
 			<div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
 				{/* LEFT */}
-				<div className=" h-36 w-36 relative hidden lg:inline-grid cursor-pointer mt-16">
+				<div className="w-36 h-20 relative hidden lg:inline-grid cursor-pointer">
 					<Image
 						width={103}
 						height={29}
 						src={'https://1000logos.net/wp-content/uploads/2017/02/Logo-Instagram-1.png'}
 						alt={'Insta Logo'}
-						className="object-contain"
+						className="object-contain h-20"
 					/>
 				</div>
-				<div className=" h-24 w-10 relative lg:hidden cursor-pointer  mt-14">
+				<div className="w-10 h-20 relative lg:hidden cursor-pointer">
 					<Image
 						width={100}
 						height={200}
 						src={'https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg'}
 						alt={'Insta Logo'}
-						className="object-contain"
+						className="object-contain h-20"
 					/>
 				</div>
+
 				{/* MIDDLE */}
 				<div className="relative mt-1">
 					<div className="absolute top-2 left-2">
@@ -41,12 +42,12 @@ const Header = () => {
 				{/* RIGHT */}
 
 				<div className="flex space-x-4 items-center">
-					<AiFillHome className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
-					<BsPlusCircle className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+					<AiFillHome className="hidden md:inline-flex h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+					<BsPlusCircle className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
 					<img
 						src="https://anthonyfink.dev/profile.png"
 						alt="image"
-						className="hidden md:inline-flex h-10 rounded-full cursor-pointer"
+						className=" h-10 rounded-full cursor-pointer"
 					/>
 				</div>
 			</div>
