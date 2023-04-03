@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import {Header} from "@/components";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       </Head>
 
       <main className="">
+          <Header />
           {/* HEADER */}
           {/* FEED */}
           {/* MODAL */}
