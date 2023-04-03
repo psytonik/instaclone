@@ -40,9 +40,14 @@ const Header = () => {
 
 				{/* RIGHT */}
 
-				<div>
+				<div className="flex space-x-4 items-center">
 					<AiFillHome className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
 					<BsPlusCircle className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+					<img
+						src="https://anthonyfink.dev/profile.png"
+						alt="image"
+						className="hidden md:inline-flex h-10 rounded-full cursor-pointer"
+					/>
 				</div>
 			</div>
 
