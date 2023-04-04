@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import {Feed, Header} from "@/components";
+import {Header} from "@/components";
+import {Feed} from "@/Screens";
 
 export default function Home() {
   return (

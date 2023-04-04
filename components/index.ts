@@ -1,15 +1,15 @@
 import Header from './Header';
-import Feed from "./Feed";
 import Stories from './Stories';
 import Story from "./Story";
 import Posts from "./Posts";
 import Post from './Post';
+import MiniProfile from './MiniProfile';
 
 export {
 	Header,
-	Feed,
 	Stories,
 	Story,
 	Posts,
-	Post
+	Post,
+	MiniProfile
 }
