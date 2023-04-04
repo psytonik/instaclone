@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from "next/image";
 import {TbDots} from "react-icons/tb";
-import {AiFillHeart, AiOutlineHeart} from "react-icons/ai";
-import {BsBookmark, BsBookmarkFill, BsChat} from "react-icons/bs";
+import { AiOutlineHeart} from "react-icons/ai";
+import {BsBookmark, BsChat} from "react-icons/bs";
 const Post = ({postData}:{postData:Post}) => {
 	const {img,userImg,userName}:Post = postData;
 	return (
