@@ -1,5 +1,5 @@
 import React from 'react';
-import {Posts, Stories,MiniProfile} from "@/components";
+import {Posts, Stories, MiniProfile, Suggestions} from "@/components";
 
 const Feed = () => {
 	return (
@@ -16,6 +16,7 @@ const Feed = () => {
 					{/* MINI PROFILE */}
 					<MiniProfile/>
 					{/* SUGGESTIONS */}
+					<Suggestions/>
 				</div>
 
 			</section>
