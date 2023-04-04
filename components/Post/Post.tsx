@@ -3,8 +3,9 @@ import Image from "next/image";
 import {TbDots} from "react-icons/tb";
 import { AiOutlineHeart} from "react-icons/ai";
 import {BsBookmark, BsChat} from "react-icons/bs";
+import {ImHappy} from "react-icons/im";
 const Post = ({postData}:{postData:Post}) => {
-	const {img,userImg,userName}:Post = postData;
+	const {img,userImg,userName,caption}:Post = postData;
 	return (
 		<div className="bg-white my-7 border rounded-md">
 			{/* POST HEADER */}
@@ -26,6 +27,16 @@ const Post = ({postData}:{postData:Post}) => {
 				</div>
 				<BsBookmark className="btn"/>
 			</div>
+			{/* POST COMMENT */}
+			<p className="p-5 truncate ">
+				<span className="font-bold mr-2">{userName}</span> {caption}
+			</p>
+			{/* POST INPUT */}
+			<form className="flex items-center p-4">
+				<ImHappy className="h-7"/>
+				<input type="text" placeholder="Write something" className="border-none flex-1 focus:ring-0"/>
+				<button className="text-blue-400 font-bold">Post</button>
+			</form>
 		</div>
 	);
 };
