@@ -1,5 +1,5 @@
 import React from 'react';
-import {Stories} from "@/components";
+import {Posts, Stories} from "@/components";
 
 const Feed = () => {
 	return (
@@ -8,6 +8,7 @@ const Feed = () => {
 				{/* STORIES */}
 				<Stories />
 				{/* POSTS */}
+				<Posts/>
 			</section>
 
 			<section>
