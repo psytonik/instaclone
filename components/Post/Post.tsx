@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from "next/image";
 import {TbDots} from "react-icons/tb";
+import {AiFillHeart, AiOutlineHeart} from "react-icons/ai";
+import {BsBookmark, BsBookmarkFill, BsChat} from "react-icons/bs";
 const Post = ({postData}:{postData:Post}) => {
 	const {img,userImg,userName}:Post = postData;
 	return (
@@ -16,6 +18,14 @@ const Post = ({postData}:{postData:Post}) => {
 			</div>
 			{/* POST IMAGE */}
 			<Image src={img} alt={userName} className="object-cover w-full" width={870} height={580}/>
+			{/* POST BUTTON */}
+			<div className="flex justify-between items-center px-4 pt-4">
+				<div className="flex space-x-4">
+					<AiOutlineHeart className="btn"/>
+					<BsChat className="btn"/>
+				</div>
+				<BsBookmark className="btn"/>
+			</div>
 		</div>
 	);
 };
