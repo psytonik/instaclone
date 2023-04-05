@@ -18,5 +18,9 @@ export default NextAuth({
 			server: process.env.MAIL_SERVER,
 			from: "<no-reply@example.com>",
 		}),
-	]
+	],
+	pages: {
+		signIn: '/auth/sign-in',
+		signOut: 'sign-out'
+	}
 })
