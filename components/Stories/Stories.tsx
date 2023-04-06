@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import minifaker from 'minifaker';
+import miniFaker from 'minifaker';
 import 'minifaker/locales/en';
 import {Story} from "@/components";
 
@@ -7,9 +7,9 @@ const Stories = () => {
 	const [storyUsers, setStoryUsers] = useState([]);
 
 	useEffect(()=>{
-		const storyU:any = minifaker.array(40,(index)=>(
+		const storyU:any = miniFaker.array(40,(index)=>(
 			{
-				userName: minifaker.username({locale:'en'}).toLowerCase(),
+				userName: miniFaker.username({locale:'en'}).toLowerCase(),
 				img:`https://i.pravatar.cc/150?img=${Math.ceil(Math.random() * 70)}`,
 				id: index
 			}

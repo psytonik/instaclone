@@ -6,6 +6,7 @@ import Post from './Post';
 import MiniProfile from './MiniProfile';
 import Suggestions from './Suggestions';
 
+
 export {
 	Header,
 	Stories,
@@ -13,5 +14,5 @@ export {
 	Posts,
 	Post,
 	MiniProfile,
-	Suggestions
+	Suggestions,
 }
