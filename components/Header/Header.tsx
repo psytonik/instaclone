@@ -3,8 +3,11 @@ import Image from "next/image";
 import {BiSearch} from "react-icons/bi";
 import {AiFillHome} from "react-icons/ai";
 import {BsPlusCircle} from 'react-icons/bs';
+import {useSession, signOut, signIn} from "next-auth/react";
 
 const Header = () => {
+	const {data:session} = useSession();
+
 	return (
 		<nav className="shadow-sm border-b sticky top-0 bg-white z-30">
 			<div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
@@ -43,12 +46,19 @@ const Header = () => {
 
 				<div className="flex space-x-4 items-center">
 					<AiFillHome className="hidden md:inline-flex h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
-					<BsPlusCircle className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
-					<img
-						src="https://anthonyfink.dev/profile.png"
-						alt="image"
-						className=" h-10 rounded-full cursor-pointer"
-					/>
+					{session ? (
+						<>
+							<BsPlusCircle className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+							<img
+								onClick={()=>signOut()}
+								src={session.user?.image || 'https://anthonyfink.dev/profile.png'}
+								alt="image"
+								className=" h-10 rounded-full cursor-pointer"
+							/>
+						</>
+					):(
+						<button onClick={()=>signIn()}>Sign In</button>
+					)}
 				</div>
 			</div>
 
