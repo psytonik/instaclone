@@ -5,7 +5,7 @@ import Posts from "./Posts";
 import Post from './Post';
 import MiniProfile from './MiniProfile';
 import Suggestions from './Suggestions';
-
+import UploadModal from './UploadModal';
 
 export {
 	Header,
@@ -15,4 +15,5 @@ export {
 	Post,
 	MiniProfile,
 	Suggestions,
+	UploadModal
 }

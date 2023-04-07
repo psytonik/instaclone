@@ -4,11 +4,15 @@ import {BiSearch} from "react-icons/bi";
 import {AiFillHome} from "react-icons/ai";
 import {BsPlusCircle} from 'react-icons/bs';
 import {useSession, signOut, signIn} from "next-auth/react";
+import {modalState} from "@/atom/modalAtom";
+import {useRecoilState} from "recoil";
+
 
 const Header = () => {
 	const {data:session} = useSession();
+	const [,setOpen] = useRecoilState<boolean>(modalState);
 
-	return (
+	return	 (
 		<nav className="shadow-sm border-b sticky top-0 bg-white z-30">
 			<div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
 				{/* LEFT */}
@@ -48,7 +52,9 @@ const Header = () => {
 					<AiFillHome className="hidden md:inline-flex h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
 					{session ? (
 						<>
-							<BsPlusCircle className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+							<BsPlusCircle
+								onClick={()=>setOpen(true)}
+								className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
 							<img
 								onClick={()=>signOut()}
 								src={session.user?.image || 'https://anthonyfink.dev/profile.png'}

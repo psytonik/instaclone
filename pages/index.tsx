@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {Header} from "@/components";
+import {Header, UploadModal} from "@/components";
 import Feed from "@/screens";
 
 export default function Home() {
@@ -16,6 +16,7 @@ export default function Home() {
           {/* FEED */}
         <Feed/>
           {/* MODAL */}
+        <UploadModal />
     </>
   )
 }
