@@ -15,5 +15,12 @@ export default NextAuth({
 	],
 	pages: {
 		signIn: '/auth/sign-in'
+	},
+	callbacks: {
+		async session({session,token}:any):Promise<any>{
+			session.user.username = session.user.name.split(" ").join("").toLowerCase();
+			session.user.uid = await token.sub;
+			return session;
+		}
 	}
 })
