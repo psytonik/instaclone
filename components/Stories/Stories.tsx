@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import miniFaker from 'minifaker';
 import 'minifaker/locales/en';
 import {Story} from "@/components";
 import {useSession} from "next-auth/react";
 
-const Stories = () => {
+const Stories: FC = () => {
 	const {data:session}:any = useSession();
 
-	const [storyUsers, setStoryUsers] = useState([]);
+	const [storyUsers, setStoryUsers] = useState<[]>([]);
 
 	useEffect(()=>{
 		const storyU:any = miniFaker.array(40,(index)=>(

@@ -1,14 +1,15 @@
-import React, {ChangeEvent, SetStateAction, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, SetStateAction, useRef, useState} from 'react';
 import {modalState} from "@/atom/modalAtom";
 import {useRecoilState} from "recoil";
 import Modal from 'react-modal';
 import {FiCamera} from "react-icons/fi";
 import Image from 'next/image';
-const UploadModal = () => {
+const UploadModal: FC = () => {
 	const [open,setOpen] = useRecoilState<boolean>(modalState);
 	const filePickerRef = useRef<HTMLInputElement>(null);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const addImageToPost = async(event:ChangeEvent<HTMLInputElement>) => {
+
+	const addImageToPost = (event:ChangeEvent<HTMLInputElement>):void => {
 		event.preventDefault();
 		const reader = new FileReader();
 		if(event.target.files){
@@ -18,10 +19,12 @@ const UploadModal = () => {
 			setSelectedFile(readerEvent.target?.result as SetStateAction<File | null>)
 		}
 	}
-	const onClose = async () => {
+
+	const onClose = ():void => {
 		setSelectedFile(null)
 		setOpen(false)
 	}
+
 	return (
 		<div>
 			{open && (

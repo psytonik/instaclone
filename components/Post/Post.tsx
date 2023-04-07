@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {FC} from 'react';
 import Image from "next/image";
 import {TbDots} from "react-icons/tb";
 import { AiOutlineHeart} from "react-icons/ai";
 import {BsBookmark, BsChat} from "react-icons/bs";
 import {ImHappy} from "react-icons/im";
-const Post = ({postData}:{postData:Post}) => {
+const Post:FC<{postData:Post}> = ({postData}) => {
 	const {img,userImg,userName,caption}:Post = postData;
+
 	return (
 		<div className="bg-white my-7 border rounded-md">
 			{/* POST HEADER */}

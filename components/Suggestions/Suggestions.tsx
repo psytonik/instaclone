@@ -1,8 +1,10 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import minifaker from 'minifaker';
 import 'minifaker/locales/en';
-const Suggestions = () => {
-	const [suggestions, setSuggestions] = useState([]);
+
+const Suggestions:FC = () => {
+	const [suggestions, setSuggestions] = useState<[]>([]);
+
 	useEffect(() => {
 		const suggestion:any = minifaker.array(5,(index:number)=>({
 			userName: minifaker.username({locale:'en'}).toLowerCase(),
@@ -10,7 +12,6 @@ const Suggestions = () => {
 			id: index,
 		}))
 		setSuggestions(suggestion);
-		return () => {};
 	}, []);
 
 	return (
