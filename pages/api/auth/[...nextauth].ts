@@ -5,8 +5,8 @@ export default NextAuth({
 	// secret: process.env.SECRET,
 	providers: [
 		GoogleProvider({
-			clientId: process.env.GOOGLE_ID as string,
-			clientSecret: process.env.GOOGLE_SECRET as string,
+			clientId: process.env.NEXT_PUBLIC_GOOGLE_ID as string,
+			clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET as string,
 		}),
 	],
 	pages: {
