@@ -6,12 +6,12 @@ import {BsPlusCircle} from 'react-icons/bs';
 import {useSession, signOut, signIn} from "next-auth/react";
 import {modalState} from "@/atom/modalAtom";
 import {useRecoilState} from "recoil";
-
+import {useRouter} from "next/router";
 
 const Header = () => {
 	const {data:session} = useSession();
 	const [,setOpen] = useRecoilState<boolean>(modalState);
-
+	const router = useRouter();
 	return	 (
 		<nav className="shadow-sm border-b sticky top-0 bg-white z-30">
 			<div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
@@ -23,6 +23,7 @@ const Header = () => {
 						src={'https://1000logos.net/wp-content/uploads/2017/02/Logo-Instagram-1.png'}
 						alt={'Insta Logo'}
 						className="object-contain h-20"
+						onClick={()=>router.push('/')}
 					/>
 				</div>
 				<div className="w-10 h-20 relative lg:hidden cursor-pointer">
@@ -32,6 +33,7 @@ const Header = () => {
 						src={'https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg'}
 						alt={'Insta Logo'}
 						className="object-contain h-20"
+						onClick={()=>router.push('/')}
 					/>
 				</div>
 
@@ -49,7 +51,10 @@ const Header = () => {
 				{/* RIGHT */}
 
 				<div className="flex space-x-4 items-center">
-					<AiFillHome className="hidden md:inline-flex h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+					<AiFillHome
+						className="hidden md:inline-flex h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"
+						onClick={()=>router.push('/')}
+					/>
 					{session ? (
 						<>
 							<BsPlusCircle
