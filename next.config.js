@@ -9,7 +9,8 @@ const nextConfig = {
       'i.pravatar.cc',
       'images.unsplash.com',
       'plus.unsplash.com',
-      'lh3.googleusercontent.com'
+      'lh3.googleusercontent.com',
+        'firebasestorage.googleapis.com'
     ]
   }
 }

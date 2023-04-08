@@ -51,10 +51,16 @@ const UploadModal: FC = () => {
 					await updateDoc(doc(db,"posts",docRef.id),{
 						image:downloadUrl
 					})
+				}).catch((error)=>{
+					console.log('ERROR WITH NETWORK', error);
+					setOpen(false);
+					setLoading(false);
+					setSelectedFile(null);
+				}).finally(()=>{
+					setOpen(false);
+					setLoading(false);
+					setSelectedFile(null);
 				});
-			setOpen(false);
-			setLoading(false);
-			setSelectedFile(null);
 		}
 	}
 
