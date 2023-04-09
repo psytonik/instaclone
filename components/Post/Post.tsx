@@ -9,12 +9,6 @@ import {useSession} from "next-auth/react";
 import {addDoc, collection, serverTimestamp} from "@firebase/firestore";
 import {db} from '@/utils/firebase';
 
-
-
-
-
-
-
 const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const {image,profileImage,userName,caption}:Post = postData;
 	const session = useSession();
