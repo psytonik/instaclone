@@ -15,7 +15,7 @@ const Posts = () => {
 	return (
 		<div>
 			{posts
-				.map((post:any,index:number)=> (<Post key={index} postData={post.data()} />))
+				.map((post:any)=> (<Post key={post.id} postData={post.data()} id={post.id} />))
 			}
 		</div>
 	);

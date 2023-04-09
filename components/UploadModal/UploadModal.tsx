@@ -37,30 +37,34 @@ const UploadModal: FC = () => {
 	const uploadPost = async ():Promise<void> =>{
 		if(loading)return;
 		setLoading(true);
-		const docRef = await addDoc(collection(db,"posts"),{
-			caption: captionRef.current?.value,
-			userName: session?.user?.username,
-			profileImage: session.user.image,
-			timestamp: serverTimestamp()
-		});
-		const imageRef = await ref(storage, `posts/${docRef.id}/image`);
-		if(typeof selectedFile === 'string'){
-			await uploadString(imageRef,selectedFile, "data_url")
-				.then(async()=>{
-					const downloadUrl= await getDownloadURL(imageRef);
-					await updateDoc(doc(db,"posts",docRef.id),{
-						image:downloadUrl
-					})
-				}).catch((error)=>{
-					console.log('ERROR WITH NETWORK', error);
-					setOpen(false);
-					setLoading(false);
-					setSelectedFile(null);
-				}).finally(()=>{
-					setOpen(false);
-					setLoading(false);
-					setSelectedFile(null);
-				});
+		try{
+			const docRef = await addDoc(collection(db,"posts"),{
+				caption: captionRef.current?.value,
+				userName: session?.user?.username,
+				profileImage: session.user.image,
+				timestamp: serverTimestamp()
+			});
+			const imageRef = await ref(storage, `posts/${docRef.id}/image`);
+			if(typeof selectedFile === 'string'){
+				await uploadString(imageRef,selectedFile, "data_url")
+					.then(async()=>{
+						const downloadUrl= await getDownloadURL(imageRef);
+						await updateDoc(doc(db,"posts",docRef.id),{
+							image:downloadUrl
+						})
+					}).catch((error)=>{
+						console.log('ERROR WITH NETWORK', error);
+						setOpen(false);
+						setLoading(false);
+						setSelectedFile(null);
+					}).finally(()=>{
+						setOpen(false);
+						setLoading(false);
+						setSelectedFile(null);
+					});
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
