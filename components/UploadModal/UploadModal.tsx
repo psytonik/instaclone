@@ -38,25 +38,22 @@ const UploadModal: FC = () => {
 		if(loading)return;
 		setLoading(true);
 		try{
-			const docRef = await addDoc(collection(db,"posts"),{
+			const {id:postId} = await addDoc(collection(db,"posts"),{
 				caption: captionRef.current?.value,
-				userName: session?.user?.username,
-				profileImage: session.user.image,
+				userName: session?.user?.username ??'',
+				profileImage: session.user.image ?? '',
 				timestamp: serverTimestamp()
 			});
-			const imageRef = await ref(storage, `posts/${docRef.id}/image`);
+			const imageRef = await ref(storage, `posts/${postId}/image`);
 			if(typeof selectedFile === 'string'){
 				await uploadString(imageRef,selectedFile, "data_url")
 					.then(async()=>{
 						const downloadUrl= await getDownloadURL(imageRef);
-						await updateDoc(doc(db,"posts",docRef.id),{
+						await updateDoc(doc(db,"posts",postId),{
 							image:downloadUrl
 						})
 					}).catch((error)=>{
-						console.log('ERROR WITH NETWORK', error);
-						setOpen(false);
-						setLoading(false);
-						setSelectedFile(null);
+						console.log('ERROR adding post', error);
 					}).finally(()=>{
 						setOpen(false);
 						setLoading(false);

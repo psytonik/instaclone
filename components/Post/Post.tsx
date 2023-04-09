@@ -12,12 +12,13 @@ import {db} from '@/utils/firebase';
 const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const {image,profileImage,userName,caption}:Post = postData;
 	const session = useSession();
-	const {data:{user}}:any = session;
+
+	const {data:{user}}:any  = session;
 	const [comment,setComment] = useState<string>("");
 
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
-		const commentToSend = comment;
+		const commentToSend = comment.trim();
 		setComment('');
 		try{
 			await addDoc(collection(db,'posts', id, "comments"),{
