@@ -1,13 +1,23 @@
 import React, {FC, FormEvent, useState, useEffect} from 'react';
 import Image from "next/image";
 import {TbDots} from "react-icons/tb";
-import { AiOutlineHeart} from "react-icons/ai";
+import {AiFillHeart, AiOutlineHeart} from "react-icons/ai";
 import {BsBookmark, BsChat} from "react-icons/bs";
 import {ImHappy} from "react-icons/im";
 import Moment from 'react-moment';
 
 import {useSession} from "next-auth/react";
-import {addDoc, collection, onSnapshot, orderBy, query, serverTimestamp} from "@firebase/firestore";
+import {
+	addDoc,
+	collection,
+	onSnapshot,
+	orderBy,
+	query,
+	QueryDocumentSnapshot,
+	serverTimestamp,
+	setDoc,
+	doc, deleteDoc
+} from "@firebase/firestore";
 import {db} from '@/utils/firebase';
 
 const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
@@ -16,8 +26,10 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 
 	const {data}:any  = session;
 	const [comment,setComment] = useState<string>("");
-	const [comments,setComments] = useState<any>([]);
-
+	const [comments,setComments] = useState<QueryDocumentSnapshot[]>([]);
+	const [hasLiked,setHasLiked] = useState<boolean>(false);
+	const [likes, setLikes] = useState<QueryDocumentSnapshot[]>([]);
+	console.log(likes.map(like=>console.log(like)));
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
 		const commentToSend = comment.trim();
@@ -34,6 +46,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 		}
 	}
 
+	//// Fetching post comments
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
 			query(collection(db,"posts", id,"comments"),orderBy('timestamp', 'desc')),
@@ -43,6 +56,28 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 		)
 		return () => unsubscribe();
 	}, [id]);
+
+	//// SET OR DELETE LIKE FROM FIREBASE
+	const likePost = async() => {
+		if(hasLiked) {
+			await deleteDoc(doc(db,'posts', id, "likes", data.user.uid))
+		} else {
+			await setDoc(doc(db,"posts", id, "likes", data.user.uid), {
+				username: data.user.username
+			})
+		}
+	}
+
+	useEffect(() => {
+		const unsubscribe = onSnapshot(collection(db,"posts", id, "likes"),(snapshot)=>{
+			setLikes(snapshot.docs)
+		});
+		return () => unsubscribe();
+	}, [id]);
+
+	useEffect(() => {
+		setHasLiked(likes.findIndex(like => like.id === data?.user.uid) != -1)
+	}, [likes,data]);
 
 	return (
 		<div className="bg-white my-7 border rounded-md">
@@ -63,7 +98,12 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			{session.status === 'authenticated' && (
 				<div className="flex justify-between items-center px-4 pt-4">
 					<div className="flex space-x-4">
-						<AiOutlineHeart className="btn"/>
+						{hasLiked ? (
+							<AiFillHeart onClick={likePost} className="btn text-red-500"/>
+						) : (
+							<AiOutlineHeart onClick={likePost} className="btn"/>
+						)}
+
 						<BsChat className="btn"/>
 					</div>
 					<BsBookmark className="btn"/>
@@ -78,7 +118,9 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 				<div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
 					{comments.map((comment:any)=>(
 							<div key={comment.id} className="flex items-center space-x-2 mb-2">
-								<img
+								<Image
+									width={28}
+									height={15}
 									className="rounded-full h-7 cursor-pointer object-cover"
 									src={comment.data().profileImage} alt="user image"/>
 								<p className="font-semibold">{comment.data().userName}</p>
