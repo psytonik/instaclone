@@ -114,6 +114,9 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 
 			{/* POST COMMENT */}
 			<p className="p-5 truncate ">
+				{likes.length > 0 && (<p className="font-bold mb-1">
+					{likes.length === 1 ? likes.length + ' ' +'like' :likes.length + ' ' + 'likes'}
+				</p>) }
 				<span className="font-bold mr-2">{userName}</span> {caption}
 			</p>
 			{comments.length > 0 && (
