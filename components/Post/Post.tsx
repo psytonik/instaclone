@@ -29,7 +29,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const [comments,setComments] = useState<QueryDocumentSnapshot[]>([]);
 	const [hasLiked,setHasLiked] = useState<boolean>(false);
 	const [likes, setLikes] = useState<QueryDocumentSnapshot[]>([]);
-	console.log(likes.map(like=>console.log(like)));
+
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
 		const commentToSend = comment.trim();
@@ -68,6 +68,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 		}
 	}
 
+	//// Fetch likes from Database
 	useEffect(() => {
 		const unsubscribe = onSnapshot(collection(db,"posts", id, "likes"),(snapshot)=>{
 			setLikes(snapshot.docs)
@@ -75,6 +76,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 		return () => unsubscribe();
 	}, [id]);
 
+	///// Like the post
 	useEffect(() => {
 		setHasLiked(likes.findIndex(like => like.id === data?.user.uid) != -1)
 	}, [likes,data]);
