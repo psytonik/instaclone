@@ -1,20 +1,22 @@
-import React, {FC, FormEvent, useState} from 'react';
+import React, {FC, FormEvent, useState, useEffect} from 'react';
 import Image from "next/image";
 import {TbDots} from "react-icons/tb";
 import { AiOutlineHeart} from "react-icons/ai";
 import {BsBookmark, BsChat} from "react-icons/bs";
 import {ImHappy} from "react-icons/im";
+import Moment from 'react-moment';
 
 import {useSession} from "next-auth/react";
-import {addDoc, collection, serverTimestamp} from "@firebase/firestore";
+import {addDoc, collection, onSnapshot, orderBy, query, serverTimestamp} from "@firebase/firestore";
 import {db} from '@/utils/firebase';
 
 const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const {image,profileImage,userName,caption}:Post = postData;
 	const session = useSession();
 
-	const {data:{user}}:any  = session;
+	const {data}:any  = session;
 	const [comment,setComment] = useState<string>("");
+	const [comments,setComments] = useState<any>([]);
 
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
@@ -23,14 +25,25 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 		try{
 			await addDoc(collection(db,'posts', id, "comments"),{
 				comment:commentToSend,
-				userName: user.username,
-				profileImage: user.image,
+				userName: data?.user?.username ??'',
+				profileImage: data?.user?.image ?? '',
 				timestamp: serverTimestamp()
 			});
 		} catch (e) {
 			console.log(e);
 		}
 	}
+
+	useEffect(() => {
+		const unsubscribe = onSnapshot(
+			query(collection(db,"posts", id,"comments"),orderBy('timestamp', 'desc')),
+			(snapshot)=>{
+				setComments(snapshot.docs)
+			}
+		)
+		return () => unsubscribe();
+	}, [id]);
+
 	return (
 		<div className="bg-white my-7 border rounded-md">
 			{/* POST HEADER */}
@@ -61,6 +74,24 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			<p className="p-5 truncate ">
 				<span className="font-bold mr-2">{userName}</span> {caption}
 			</p>
+			{comments.length > 0 && (
+				<div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
+					{comments.map((comment:any)=>(
+							<div key={comment.id} className="flex items-center space-x-2 mb-2">
+								<img
+									className="rounded-full h-7 cursor-pointer object-cover"
+									src={comment.data().profileImage} alt="user image"/>
+								<p className="font-semibold">{comment.data().userName}</p>
+								<p className="flex-1 truncate">{comment.data().comment}</p>
+								<Moment
+									fromNow={comment.data().timestamp?.toDate()}
+								>{comment.data().timestamp?.toDate()
+								}</Moment>
+							</div>
+						)
+					)}
+				</div>
+			)}
 
 			{/* POST INPUT */}
 			{session.status === 'authenticated' && (

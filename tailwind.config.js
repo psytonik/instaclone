@@ -6,7 +6,17 @@ module.exports = {
     "./screens/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'smooth-spin': 'smooth-spin 2s linear infinite',
+      },
+      keyframes: {
+        'smooth-spin': {
+          '0%': { transform: 'translateY(0%)' },
+          '100%': { transform: 'translateY(-700%)' },
+        },
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
