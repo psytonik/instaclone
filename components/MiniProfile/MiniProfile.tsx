@@ -23,6 +23,7 @@ const MiniProfile = () => {
 							alt="image"
 							className="h-16 rounded-full boarder p-[2px] cursor-pointer"
 						/>
+						
 						<div className="flex-1 ml-4">
 							<h2 className="font-bold">
 								{currentUser?.username}
