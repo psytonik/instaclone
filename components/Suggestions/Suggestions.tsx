@@ -1,6 +1,7 @@
 import React, {useState, useEffect, FC} from 'react';
 import minifaker from 'minifaker';
 import 'minifaker/locales/en';
+import Image from "next/image";
 
 const Suggestions:FC = () => {
 	const [suggestions, setSuggestions] = useState<[]>([]);
@@ -22,7 +23,9 @@ const Suggestions:FC = () => {
 			</div>
 			{suggestions && suggestions.map((suggestion:any)=>(
 				<div key={suggestion.id} className="flex items-center justify-between mt-3">
-					<img
+					<Image
+						width={50}
+						height={56}
 						src={`https://i.pravatar.cc/150?img=${Math.ceil(Math.random() * 70)}`}
 						alt={suggestion.userName}
 						className="rounded-full h-10 p-[2px] border cursor-pointer hover:scale-110

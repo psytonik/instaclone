@@ -4,6 +4,7 @@ import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 import {db} from '@/utils/firebase'
 import {doc, getDoc, serverTimestamp, setDoc} from "@firebase/firestore";
 import {useRouter} from "next/router";
+import Image from "next/image";
 
 const SignIn = () => {
 	const router = useRouter();
@@ -40,13 +41,21 @@ const SignIn = () => {
 		<>
 			<Header/>
 			<div className="flex justify-center space-x-7 mt-20">
-				<img
-					className="hidden object-cover rotate-6 md:inline-flex md:w-48"
+				<Image
+					width={250}
+					height={80}
+					style={{width:'auto',height:'auto'}}
+
+					className="hidden object-cover rotate-6 md:inline-flex "
 					src="https://superviral.com.au/wp-content/uploads/2021/10/Buy-Instagram-Followers-Australia.png" alt="images"/>
 				<div className="">
 						<div className="flex flex-col items-center">
-							<img
-								className="w-32 object-cover"
+							<Image
+								width={150}
+								height={80}
+								style={{width:'auto',height:'auto'}}
+
+								className="object-cover"
 								src="https://www.careeractivate.com/wp-content/uploads/2019/04/Instagram-1.png" alt="insta img"/>
 							<p className="text-sm italic my-10 text-center">This app created for learning purposes</p>
 							<button

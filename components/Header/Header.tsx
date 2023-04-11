@@ -86,7 +86,9 @@ const Header = () => {
 							<BsPlusCircle
 								onClick={()=>setOpen(true)}
 								className="h-12 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
-							<img
+							<Image
+								width={40}
+								height={40}
 								onClick={onSignOut}
 								src={currentUser.userImage || 'https://anthonyfink.dev/profile.png'}
 								alt="image"

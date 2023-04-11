@@ -27,7 +27,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const [comments,setComments] = useState<QueryDocumentSnapshot[]>([]);
 	const [hasLiked,setHasLiked] = useState<boolean>(false);
 	const [likes, setLikes] = useState<QueryDocumentSnapshot[]>([]);
-	const [currentUser,] = useRecoilState<any>(userState);
+	const [currentUser] = useRecoilState<any |null>(userState);
 
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
@@ -60,10 +60,10 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	//// SET OR DELETE LIKE FROM FIREBASE
 	const likePost = async() => {
 		if(hasLiked) {
-			await deleteDoc(doc(db,'posts', id, "likes", currentUser.uid))
+			await deleteDoc(doc(db,'posts', id, "likes", currentUser?.uid))
 		} else {
-			await setDoc(doc(db,"posts", id, "likes", currentUser.uid), {
-				username: currentUser.username
+			await setDoc(doc(db,"posts", id, "likes", currentUser?.uid), {
+				username: currentUser?.username
 			})
 		}
 	}
@@ -78,7 +78,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 
 	///// Like the post
 	useEffect(() => {
-		setHasLiked(likes.findIndex(like => like.id === currentUser.uid) != -1)
+		setHasLiked(likes.findIndex(like => like.id === currentUser?.uid) != -1)
 	}, [likes,currentUser]);
 
 	return (
@@ -94,7 +94,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			</div>
 
 			{/* POST IMAGE */}
-			<Image src={image} alt={userName} className="object-cover w-full" width={500} height={300} priority/>
+			<Image src={image} alt={userName} className="object-cover w-full" width={400} height={200} priority/>
 
 			{/* POST BUTTON */}
 			{currentUser && (
@@ -113,12 +113,12 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			)}
 
 			{/* POST COMMENT */}
-			<p className="p-5 truncate ">
+			<div className="p-5 truncate ">
 				{likes.length > 0 && (<p className="font-bold mb-1">
 					{likes.length === 1 ? likes.length + ' ' +'like' :likes.length + ' ' + 'likes'}
 				</p>) }
 				<span className="font-bold mr-2">{userName}</span> {caption}
-			</p>
+			</div>
 			{comments.length > 0 && (
 				<div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
 					{comments.map((comment:any)=>(
