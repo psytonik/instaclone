@@ -1,8 +1,41 @@
 import React from 'react';
-import {getProviders, signIn} from "next-auth/react";
 import {Header} from "@/components";
-const SignIn = ({providers}:any) => {
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {db} from '@/utils/firebase'
+import {doc, getDoc, serverTimestamp, setDoc} from "@firebase/firestore";
+import {useRouter} from "next/router";
 
+const SignIn = () => {
+	const router = useRouter();
+	const onGoogleClick = async() => {
+		try {
+			const auth = getAuth();
+			const provider = new GoogleAuthProvider();
+			await signInWithPopup(auth,provider)
+			const user = auth.currentUser?.providerData[0];
+			if(!user){
+				return;
+			}
+			const docRef = doc(db, "users", user.uid)
+			const docSnap = await getDoc(docRef);
+
+			if(!docSnap.exists()){
+				await setDoc(docRef,{
+					name: user.displayName,
+					email: user.email,
+					userImage: user.photoURL,
+					uid:user.uid,
+					timestamp: serverTimestamp(),
+					username: user.displayName?.split(' ').join('').toLocaleLowerCase()
+				})
+			}
+			await router.push(`/`)
+		} catch (e) {
+			if(e instanceof Error){
+				console.log(e.message)
+			}
+		}
+	}
 	return (
 		<>
 			<Header/>
@@ -11,17 +44,15 @@ const SignIn = ({providers}:any) => {
 					className="hidden object-cover rotate-6 md:inline-flex md:w-48"
 					src="https://superviral.com.au/wp-content/uploads/2021/10/Buy-Instagram-Followers-Australia.png" alt="images"/>
 				<div className="">
-					{providers && Object.values(providers).map((provider:any,index:number)=>(
-						<div key={index} className="flex flex-col items-center">
+						<div className="flex flex-col items-center">
 							<img
 								className="w-32 object-cover"
 								src="https://www.careeractivate.com/wp-content/uploads/2019/04/Instagram-1.png" alt="insta img"/>
 							<p className="text-sm italic my-10 text-center">This app created for learning purposes</p>
 							<button
-								onClick={()=>signIn(provider.id,{callbackUrl:"/"})}
-								className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500">Sign In with {provider.name}</button>
+								onClick={onGoogleClick}
+								className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500">Sign In with Google</button>
 						</div>
-					))}
 				</div>
 			</div>
 		</>
@@ -29,10 +60,3 @@ const SignIn = ({providers}:any) => {
 };
 
 export default SignIn;
-
-export async function getServerSideProps () {
-	const providers = await getProviders();
-	return {
-		props: {providers}
-	}
-}

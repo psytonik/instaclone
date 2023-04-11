@@ -6,13 +6,13 @@ import {FiCamera} from "react-icons/fi";
 import Image from 'next/image';
 import {addDoc, collection, doc, serverTimestamp, updateDoc} from "@firebase/firestore";
 import {db, storage} from "@/utils/firebase";
-import {useSession} from "next-auth/react";
 import {getDownloadURL, ref, uploadString} from "@firebase/storage";
+import {userState} from "@/atom/userAtom";
 
 
 const UploadModal: FC = () => {
 	const [open,setOpen] = useRecoilState<boolean>(modalState);
-	const {data:session}:any = useSession()
+	const [currentUser,] = useRecoilState<any>(userState);
 	const filePickerRef = useRef<HTMLInputElement>(null);
 	const captionRef = useRef<HTMLInputElement>(null);
 
@@ -40,8 +40,8 @@ const UploadModal: FC = () => {
 		try{
 			const {id:postId} = await addDoc(collection(db,"posts"),{
 				caption: captionRef.current?.value,
-				userName: session?.user?.username ??'',
-				profileImage: session.user.image ?? '',
+				userName: currentUser?.username ??'',
+				profileImage: currentUser.userImage ?? '',
 				timestamp: serverTimestamp()
 			});
 			const imageRef = await ref(storage, `posts/${postId}/image`);

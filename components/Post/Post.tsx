@@ -5,8 +5,6 @@ import {AiFillHeart, AiOutlineHeart} from "react-icons/ai";
 import {BsBookmark, BsChat} from "react-icons/bs";
 import {ImHappy} from "react-icons/im";
 import Moment from 'react-moment';
-
-import {useSession} from "next-auth/react";
 import {
 	addDoc,
 	collection,
@@ -19,26 +17,28 @@ import {
 	doc, deleteDoc
 } from "@firebase/firestore";
 import {db} from '@/utils/firebase';
+import {useRecoilState} from "recoil";
+import {userState} from "@/atom/userAtom";
 
 const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	const {image,profileImage,userName,caption}:Post = postData;
-	const session = useSession();
 
-	const {data}:any  = session;
 	const [comment,setComment] = useState<string>("");
 	const [comments,setComments] = useState<QueryDocumentSnapshot[]>([]);
 	const [hasLiked,setHasLiked] = useState<boolean>(false);
 	const [likes, setLikes] = useState<QueryDocumentSnapshot[]>([]);
+	const [currentUser,] = useRecoilState<any>(userState);
 
 	const submitPost = async (e:FormEvent) => {
 		e.preventDefault();
 		const commentToSend = comment.trim();
 		setComment('');
+
 		try{
 			await addDoc(collection(db,'posts', id, "comments"),{
 				comment:commentToSend,
-				userName: data?.user?.username ??'',
-				profileImage: data?.user?.image ?? '',
+				userName: currentUser?.username ??'',
+				profileImage: currentUser?.userImage ?? '',
 				timestamp: serverTimestamp()
 			});
 		} catch (e) {
@@ -60,10 +60,10 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 	//// SET OR DELETE LIKE FROM FIREBASE
 	const likePost = async() => {
 		if(hasLiked) {
-			await deleteDoc(doc(db,'posts', id, "likes", data.user.uid))
+			await deleteDoc(doc(db,'posts', id, "likes", currentUser.uid))
 		} else {
-			await setDoc(doc(db,"posts", id, "likes", data.user.uid), {
-				username: data.user.username
+			await setDoc(doc(db,"posts", id, "likes", currentUser.uid), {
+				username: currentUser.username
 			})
 		}
 	}
@@ -78,8 +78,8 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 
 	///// Like the post
 	useEffect(() => {
-		setHasLiked(likes.findIndex(like => like.id === data?.user.uid) != -1)
-	}, [likes,data]);
+		setHasLiked(likes.findIndex(like => like.id === currentUser.uid) != -1)
+	}, [likes,currentUser]);
 
 	return (
 		<div className="bg-white my-7 border rounded-md">
@@ -97,7 +97,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			<Image src={image} alt={userName} className="object-cover w-full" width={500} height={300} priority/>
 
 			{/* POST BUTTON */}
-			{session.status === 'authenticated' && (
+			{currentUser && (
 				<div className="flex justify-between items-center px-4 pt-4">
 					<div className="flex space-x-4">
 						{hasLiked ? (
@@ -141,7 +141,7 @@ const Post:FC<{postData:Post,id:string}> = ({postData,id}) => {
 			)}
 
 			{/* POST INPUT */}
-			{session.status === 'authenticated' && (
+			{currentUser && (
 				<form className="flex items-center p-4" onSubmit={(e:FormEvent)=>submitPost(e)}>
 					<ImHappy className="h-7"/>
 					<input
